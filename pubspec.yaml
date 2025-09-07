@@ -37,6 +37,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   provider: ^6.1.5+1
   hive: ^2.2.3
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -98,3 +99,15 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/icon.png" # Adjust path to your icon
+
+flutter_native_splash:
+  color: "#F0F2F5"
+  color_dark: "#1E1E1E"
+  image: "assets/images/logo_light.png"
+  image_dark: "assets/images/logo_dark.png"
+  android_12:
+    color: "#F0F2F5"
+    color_dark: "#1E1E1E"
+    image: "assets/images/logo_light.png"
+    image_dark: "assets/images/logo_dark.png"
+
