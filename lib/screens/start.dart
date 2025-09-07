@@ -35,7 +35,7 @@ class Start extends StatelessWidget {
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Languageselection()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Languageselection()));
                         },
                         style: ButtonStyle(
                           shape: WidgetStateProperty.all<OutlinedBorder>(

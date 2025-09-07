@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zero/components/OptionSelection.dart';
-import 'package:zero/constants/preferences.dart';
 
 class Welcomeaboard extends StatelessWidget {
   const Welcomeaboard({super.key});
