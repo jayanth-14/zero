@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:zero/utils/string.dart';
 
 class MultiSelect extends StatefulWidget {
-  final String title;
+  final String title, id;
   final List<String> items;
 
   const MultiSelect({
     super.key,
     required this.title,
     required this.items,
+    required this.id,
   });
 
   @override
@@ -17,6 +19,7 @@ class MultiSelect extends StatefulWidget {
 
 class _MultiSelectState extends State<MultiSelect> {
   final List<String> _selectedItems = [];
+  var box = Hive.box("settings");
 
   void _itemChange(String itemValue, bool isSelected) {
     setState(() {
@@ -33,6 +36,7 @@ class _MultiSelectState extends State<MultiSelect> {
   }
 
   void _submit() {
+    box.put("languages", _selectedItems.toString());
     Navigator.of(context).pop(_selectedItems);
   }
   

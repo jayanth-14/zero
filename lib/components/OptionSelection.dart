@@ -8,16 +8,18 @@ class Optionselection extends StatelessWidget {
     required this.title,
     required this.hintText,
     required this.options,
+    required this.id,
     this.multiSelect = false,
   });
 
   final String hintText, title;
+  final String id;
   final List<String> options;
   final bool multiSelect;
 
   void _openDialog(BuildContext context) async {
     final dialog = multiSelect
-        ? MultiSelect(title: title, items: options)
+        ? MultiSelect(title: title, items: options, id: id,)
         : const Singleselect();
 
     final result = await showDialog(

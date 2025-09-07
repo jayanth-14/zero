@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:zero/screens/LanguageSelection.dart';
 import 'package:zero/utils/logoByTheme.dart';
 
@@ -7,7 +9,7 @@ class Start extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final logoUrl = getLogoByTheme(context);
-
+    final TextEditingController controller = TextEditingController();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
@@ -23,6 +25,7 @@ class Start extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: controller,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           prefixIcon: Icon(Icons.person),
@@ -35,6 +38,7 @@ class Start extends StatelessWidget {
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
+                          Hive.box('settings').put('user', controller.text);
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Languageselection()));
                         },
                         style: ButtonStyle(
