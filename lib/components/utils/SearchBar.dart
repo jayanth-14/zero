@@ -15,11 +15,19 @@ class _AppSearchState extends State<AppSearch> {
         return SearchBar(
           controller: controller,
           leading: Icon(Icons.search_rounded),
+          elevation: WidgetStatePropertyAll(1) ,
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              side: BorderSide.none,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
           hintText: "Songs, albums or artists",
+          // backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.onPrimary),
           onTap: () {
             controller.openView();
           },
-          onChanged: (value){
+          onChanged: (value) {
             controller.openView();
           },
         );

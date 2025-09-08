@@ -1,4 +1,9 @@
 import 'package:hive/hive.dart';
+import 'package:zero/models/modules.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:developer';
+
 
 class MyApi {
   final String baseUrl = 'https://rhythm-api.vercel.app/';
@@ -11,5 +16,24 @@ class MyApi {
   };
   final box = Hive.box('settings');
 
-  
+  Future<List<Module>> getModules() async { 
+  String languages = box.get("languages", defaultValue: "telugu");
+  try {
+    final response = await http.get(Uri.parse('$baseUrl${endpoints["home"]}?lang=$languages'));
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      final modulesMap = decoded['data'] as Map<String, dynamic>; // 👈 Map, not List
+      final modules = modulesMap.values
+          .map((m) => Module.fromJson(m))
+          .toList();
+
+      print("Fetched ${modules.length} modules");
+      return modules;
+    }
+  } catch (e) {
+    log("There is an error in fetching modules from API $e");
+  }
+  return [];
+}
+
 }

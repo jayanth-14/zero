@@ -36,7 +36,7 @@ class _MultiSelectState extends State<MultiSelect> {
   }
 
   void _submit() {
-    box.put("languages", _selectedItems.toString());
+    box.put("languages", _selectedItems.join(",").toLowerCase());
     Navigator.of(context).pop(_selectedItems);
   }
   
