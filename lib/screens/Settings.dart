@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:zero/components/Alerts/multiselect.dart';
+import 'package:zero/components/OptionSelection.dart';
+import 'package:zero/constants/preferences.dart';
 import 'package:zero/theme/themes.dart';
 
 class Settings extends StatelessWidget {
@@ -10,6 +13,13 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box('settings');
+    final dynamic stored = box.get('languages', defaultValue: ['telugu']);
+
+final List<String> languages = stored is String
+    ? [stored] // wrap single string into a list
+    : List<String>.from(stored as List);
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +92,7 @@ class Settings extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
-                // TODO: open language picker
+                showDialog(context: context, builder: (BuildContext context) => Dialog(child: MultiSelect(title: "Language Selection", items: Preferences.languages, id: "language",)));
               },
             ),
           ),

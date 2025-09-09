@@ -20,7 +20,6 @@ class MultiSelect extends StatefulWidget {
 class _MultiSelectState extends State<MultiSelect> {
   final List<String> _selectedItems = [];
   var box = Hive.box("settings");
-
   void _itemChange(String itemValue, bool isSelected) {
     setState(() {
       if (isSelected) {
