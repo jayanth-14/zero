@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
+  final Box box = Hive.box('settings');
+  String _mode = "system"; // default: follow system
 
-  ThemeMode get themeMode => _themeMode;
-
-  void setThemeMode(ThemeMode mode) {
-    _themeMode = mode;
-    notifyListeners();
+  ThemeProvider() {
+    _mode = box.get("theme_mode", defaultValue: "system");
   }
-  
+
+  String getThemeMode() => _mode;
+
   bool isDarkMode() {
-    return (_themeMode == ThemeMode.dark) ? true : false;
+    if (_mode == "system") {
+      final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      return brightness == Brightness.dark;
+    }
+    return _mode == "dark";
   }
 
-  void toggleTheme() {
-    if (_themeMode == ThemeMode.light) {
-      _themeMode = ThemeMode.dark;
-    } else {
-      _themeMode = ThemeMode.light;
+  ThemeMode get themeMode {
+    switch (_mode) {
+      case "light":
+        return ThemeMode.light;
+      case "dark":
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
     }
+  }
+
+  void setThemeMode(String mode) {
+    _mode = mode;
+    box.put("theme_mode", mode);
     notifyListeners();
   }
 }
