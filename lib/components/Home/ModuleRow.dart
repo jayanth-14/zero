@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zero/models/album.dart';
 import 'package:zero/models/modules.dart';
+import 'package:zero/models/songs.dart';
 import 'package:zero/screens/AlbumScreen.dart';
 // import '';
 
@@ -42,7 +44,13 @@ class ModuleRow extends StatelessWidget {
               itemCount: module.items.length,
               itemBuilder: (context, index) {
                 final item = module.items[index];
-
+                final element;
+                // if(item['type'] == 'song') {
+                //   // Song(id: id, title: title, image: image, album: album, albumId: albumId, duration: duration, artists: artists, downloadUrl: (item['download_url'] as List).last()['list'])
+                //   element = Song.fromJson(item);
+                // } else {
+                //   element = Album.fromJson(item);
+                // }
                 final String id = item["id"] ?? "";
                 final String type = item["type"] ?? "";
 
@@ -62,13 +70,13 @@ class ModuleRow extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () {
-                    if (type == "song") {
+                    if (item['type'] == "song") {
                       // TODO: Handle song playback
                     } else {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => Albumscreen(),
+                          builder: (_) => AlbumScreen(id: id,)
                         ),
                       );
                     }

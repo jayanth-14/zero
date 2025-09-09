@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:zero/models/album.dart';
 import 'package:zero/models/modules.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,5 +36,17 @@ class MyApi {
   }
   return [];
 }
+
+Future<Album> getAlbum(String id) async {
+  final response = await http.get(Uri.parse('$baseUrl${endpoints['album']}?id=$id'));
+
+  if (response.statusCode == 200) {
+    final decode = jsonDecode(response.body);
+    return Album.fromJson(decode['data']);
+  } else {
+    throw Exception("Failed to load album (${response.statusCode})");
+  }
+}
+
 
 }
