@@ -33,9 +33,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
-        title: Text('Now Playing',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        title: Text(
+          'Now Playing',
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
         centerTitle: true,
       ),
       body: StreamBuilder<MediaItem?>(
@@ -47,14 +51,20 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           }
 
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
               // Album Art
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: mediaItem.artUri != null
-                    ? Image.network(mediaItem.artUri.toString(),
-                        width: 300, height: 300, fit: BoxFit.cover)
+                    ? Image.network(
+                        mediaItem.artUri.toString(),
+                        width: 300,
+                        height: 300,
+                        fit: BoxFit.cover,
+                      )
                     : Container(
                         width: 300,
                         height: 300,
@@ -64,12 +74,20 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               ),
               const SizedBox(height: 30),
               // Song Title & Artist
-              Text(mediaItem.title,
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold)),
+              Text(
+                mediaItem.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  
+                ),
+              ),
               const SizedBox(height: 5),
-              Text(mediaItem.artist ?? 'Unknown Artist',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+              Text(
+                mediaItem.artist ?? 'Unknown Artist',
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
               const SizedBox(height: 30),
 
               // Progress Bar with live updates
@@ -83,10 +101,9 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     children: [
                       Slider(
                         activeColor: Theme.of(context).colorScheme.onSurface,
-                        inactiveColor: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.3),
+                        inactiveColor: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.3),
                         min: 0.0,
                         max: duration.inMilliseconds.toDouble(),
                         value: position.inMilliseconds
@@ -94,7 +111,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                             .toDouble(),
                         onChanged: (value) {
                           audioHandler.seek(
-                              Duration(milliseconds: value.toInt()));
+                            Duration(milliseconds: value.toInt()),
+                          );
                         },
                       ),
                       Padding(
@@ -125,8 +143,9 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     stream: audioHandler.queue,
                     builder: (context, queueSnap) {
                       final queue = queueSnap.data ?? [];
-                      final currentIndex =
-                          queue.indexWhere((item) => item.id == mediaItem.id);
+                      final currentIndex = queue.indexWhere(
+                        (item) => item.id == mediaItem.id,
+                      );
 
                       final hasPrevious = currentIndex > 0;
                       final hasNext =
@@ -141,16 +160,20 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                             color: hasPrevious
                                 ? Theme.of(context).iconTheme.color
                                 : Colors.grey.withOpacity(0.5),
-                            onPressed:
-                                hasPrevious ? audioHandler.skipToPrevious : null,
+                            onPressed: hasPrevious
+                                ? audioHandler.skipToPrevious
+                                : null,
                           ),
                           IconButton(
-                            icon: Icon(playing
-                                ? Icons.pause_circle_filled
-                                : Icons.play_circle_filled),
+                            icon: Icon(
+                              playing
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled,
+                            ),
                             iconSize: 70,
-                            onPressed:
-                                playing ? audioHandler.pause : audioHandler.play,
+                            onPressed: playing
+                                ? audioHandler.pause
+                                : audioHandler.play,
                           ),
                           IconButton(
                             icon: const Icon(Icons.skip_next),
