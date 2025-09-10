@@ -3,8 +3,8 @@ import 'package:zero/api/api.dart';
 import 'package:zero/models/album.dart';
 
 class AlbumScreen extends StatefulWidget {
-  const AlbumScreen({super.key, required this.id});
-  final String id;
+  const AlbumScreen({super.key, required this.id, required this.type});
+  final String id, type;
 
   @override
   State<AlbumScreen> createState() => _AlbumScreenState();
@@ -16,7 +16,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
   @override
   void initState() {
     super.initState();
-    _albumFuture = MyApi().getAlbum(widget.id);
+    _albumFuture = MyApi().getAlbum(widget.id, widget.type);
   }
 
   @override
@@ -24,7 +24,6 @@ class _AlbumScreenState extends State<AlbumScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Album"),
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
       ),

@@ -30,7 +30,7 @@ class Song {
       albumId: json["album_id"] ?? "",
       duration: int.tryParse(json["duration"]?.toString() ?? "0") ?? 0,
       artists: (json["artist_map"]?["primary_artists"] as List<dynamic>?)
-              ?.getRange(0, 2).map((a) => a["name"].toString())
+              ?.map((a) => a["name"].toString())
               .toList() ??
           [],
       downloadUrl: (json['download_url'] is List &&

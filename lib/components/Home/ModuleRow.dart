@@ -76,7 +76,7 @@ class ModuleRow extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => AlbumScreen(id: id,)
+                          builder: (_) => AlbumScreen(id: id, type : type)
                         ),
                       );
                     }

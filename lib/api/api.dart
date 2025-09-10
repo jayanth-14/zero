@@ -37,8 +37,8 @@ class MyApi {
   return [];
 }
 
-Future<Album> getAlbum(String id) async {
-  final response = await http.get(Uri.parse('$baseUrl${endpoints['album']}?id=$id'));
+Future<Album> getAlbum(String id, String type ) async {
+  final response = await http.get(Uri.parse('$baseUrl${endpoints[type]}?id=$id'));
 
   if (response.statusCode == 200) {
     final decode = jsonDecode(response.body);

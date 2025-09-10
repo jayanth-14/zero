@@ -18,6 +18,18 @@ class Album {
   });
 
   factory Album.fromJson(Map<String, dynamic> json) {
+    // Pick artists from either `artists` or `artist_map`
+    List<String> artists = [];
+    if (json['artists'] is List) {
+      artists = (json['artists'] as List)
+          .map((a) => a["name"].toString())
+          .toList();
+    } else if (json['artist_map']?['artists'] is List) {
+      artists = (json['artist_map']['artists'] as List)
+          .map((a) => a["name"].toString())
+          .toList();
+    }
+
     return Album(
       id: json["id"] ?? "",
       title: json["name"] ?? "",
@@ -25,11 +37,8 @@ class Album {
           ? ((json["image"] as List).last as Map<String, dynamic>)["link"] ?? ""
           : (json["image"] ?? ""),
       releaseDate: json["release_date"] ?? "",
-      artists: (json["artist_map"]?["artists"] as List<dynamic>?)
-              ?.map((a) => a["name"].toString())
-              .toList() ??
-          [],
-      songs: (json["songs"] as List<dynamic>? ?? [])
+      artists: artists,
+      songs: (json["songs"] as List? ?? [])
           .map((song) => Song.fromJson(song as Map<String, dynamic>))
           .toList(),
     );
