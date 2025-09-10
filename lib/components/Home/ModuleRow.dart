@@ -1,8 +1,11 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:zero/models/album.dart';
 import 'package:zero/models/modules.dart';
 import 'package:zero/models/songs.dart';
 import 'package:zero/screens/AlbumScreen.dart';
+import 'package:get_it/get_it.dart';
+import 'package:zero/screens/AudioPlayer.dart';
+import 'package:zero/services/audioPlayerProvider.dart';
 // import '';
 
 class ModuleRow extends StatelessWidget {
@@ -16,7 +19,22 @@ class ModuleRow extends StatelessWidget {
     if (module.title.trim().isEmpty) {
       return const SizedBox.shrink();
     }
+    final AudioHandler _audioHandler = GetIt.instance<AudioHandler>();
+      Future<void> _playSong(Song song, String? songId,) async {
+    await (_audioHandler as dynamic).addTracks(
+      [song],
+      playlistId: songId,
+    );
+    await _audioHandler.skipToQueueItem(0);
+    await _audioHandler.play();
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AudioPlayerScreen(index: 0),
+      ),
+    );
+  }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
@@ -44,13 +62,6 @@ class ModuleRow extends StatelessWidget {
               itemCount: module.items.length,
               itemBuilder: (context, index) {
                 final item = module.items[index];
-                final element;
-                // if(item['type'] == 'song') {
-                //   // Song(id: id, title: title, image: image, album: album, albumId: albumId, duration: duration, artists: artists, downloadUrl: (item['download_url'] as List).last()['list'])
-                //   element = Song.fromJson(item);
-                // } else {
-                //   element = Album.fromJson(item);
-                // }
                 final String id = item["id"] ?? "";
                 final String type = item["type"] ?? "";
 
@@ -71,7 +82,8 @@ class ModuleRow extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     if (item['type'] == "song") {
-                      // TODO: Handle song playback
+                      final Song song = Song.fromJson(item);
+                     _playSong(song, song.albumId);
                     } else {
                       Navigator.push(
                         context,
