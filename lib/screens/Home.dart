@@ -15,49 +15,58 @@ class Home extends StatelessWidget {
     var box = Hive.box('settings');
     final String user = box.get('user', defaultValue: 'Guest');
     final MyApi api = MyApi();
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         scrolledUnderElevation: 0,
       ),
       drawer: Appdrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            WelcomeUser(user: user),
-            const SizedBox(height: 10),
-            AppSearch(),
-            const SizedBox(height: 10),
+      body: FutureBuilder<List<Module>>(
+        future: api.getModules(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("No modules found"));
+          }
 
-            // 👇 This handles async fetch
-            Expanded(
-              child: FutureBuilder<List<Module>>(
-                future: api.getModules(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text("Error: ${snapshot.error}"));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("No modules found"));
-                  }
+          final modules = snapshot.data!;
 
-                  final modules = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: modules.length,
-                    itemBuilder: (context, index) {
-                      return ModuleRow(module: modules[index]);
-                    },
-                  );
-                },
+          return CustomScrollView(
+            slivers: [
+              // 👇 Add padding at the top for Welcome + Search
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      WelcomeUser(user: user),
+                      const SizedBox(height: 10),
+                      AppSearch(),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
-        ),
+
+              // 👇 Module list becomes scrollable part
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return ModuleRow(module: modules[index]);
+                  },
+                  childCount: modules.length,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
