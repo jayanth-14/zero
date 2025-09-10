@@ -15,10 +15,12 @@ const ColorScheme darkColorScheme = ColorScheme(
   onSurface: Color(0xFFE0E0E0), // Light Gray
 );
 
-
-
 // ThemeData for Dark Mode
 ThemeData darkModeTheme = ThemeData(
   colorScheme: darkColorScheme,
   scaffoldBackgroundColor: darkColorScheme.surface,
+  appBarTheme: AppBarTheme(
+    scrolledUnderElevation: 0,
+    surfaceTintColor: Colors.transparent,
+  ),
 );

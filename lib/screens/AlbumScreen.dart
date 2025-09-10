@@ -47,6 +47,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: FutureBuilder<Album>(
         future: _albumFuture,

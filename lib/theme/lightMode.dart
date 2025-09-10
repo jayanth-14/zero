@@ -19,4 +19,8 @@ const ColorScheme lightColorScheme = ColorScheme(
 ThemeData lightModeTheme = ThemeData(
   colorScheme: lightColorScheme,
   scaffoldBackgroundColor: lightColorScheme.surface,
+  appBarTheme: AppBarTheme(
+    scrolledUnderElevation: 0,
+    surfaceTintColor: Colors.transparent,
+  ),
 );

@@ -52,7 +52,7 @@ class Zero extends StatelessWidget {
           home: start,
           theme: lightModeTheme,       // your custom light theme
           darkTheme: darkModeTheme,   // your custom dark theme
-          themeMode: themeProvider.themeMode, // system / light / dark
+          themeMode: themeProvider.themeMode, // system / light / darks
         );
       },
     );
