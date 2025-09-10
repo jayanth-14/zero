@@ -15,13 +15,13 @@ class Home extends StatelessWidget {
     var box = Hive.box('settings');
     final String user = box.get('user', defaultValue: 'Guest');
     final MyApi api = MyApi();
-
+print('username: $user');
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(),
       drawer: Appdrawer(),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
