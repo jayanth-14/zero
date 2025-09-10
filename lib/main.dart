@@ -4,16 +4,20 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:zero/screens/Home.dart';
 import 'package:zero/screens/start.dart';
+import 'package:zero/services/serviceLoacator.dart';
 import 'package:zero/theme/darkMode.dart';
 import 'package:zero/theme/lightMode.dart';
 import 'package:zero/theme/themes.dart';
 import 'package:flutter/services.dart';
+import 'package:zero/utils/permissions.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); 
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   await Hive.openBox('settings');
+  await requestNotificationPermission();
+  await setupServiceLocator();
   
   runApp(
     MultiProvider(

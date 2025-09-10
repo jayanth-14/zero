@@ -1,6 +1,10 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zero/api/api.dart';
 import 'package:zero/models/album.dart';
+import 'package:zero/models/songs.dart';
+import 'package:zero/screens/AudioPlayer.dart';
 
 class AlbumScreen extends StatefulWidget {
   const AlbumScreen({super.key, required this.id, required this.type});
@@ -12,11 +16,28 @@ class AlbumScreen extends StatefulWidget {
 
 class _AlbumScreenState extends State<AlbumScreen> {
   late Future<Album> _albumFuture;
+  final AudioHandler _audioHandler = GetIt.instance<AudioHandler>();
 
   @override
   void initState() {
     super.initState();
     _albumFuture = MyApi().getAlbum(widget.id, widget.type);
+  }
+
+  Future<void> _playSongs(List<Song> songs, int index) async {
+    await (_audioHandler as dynamic).addTracks(
+      songs,
+      playlistId: widget.id,
+    );
+    await _audioHandler.skipToQueueItem(index);
+    await _audioHandler.play();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AudioPlayerScreen(index: index),
+      ),
+    );
   }
 
   @override
@@ -85,7 +106,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          "${album.songs.length} Songs · ${album.releaseDate} · ${album.artists.join(", ")}",
+                          "${songs.length} Songs · ${album.releaseDate} · ${album.artists.join(", ")}",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -98,19 +119,18 @@ class _AlbumScreenState extends State<AlbumScreen> {
                           children: [
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor: Theme.of(context)
                                     .colorScheme
-                                    .primary,
-                                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                    .onPrimary,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                               ),
-                              onPressed: () {
-                                // TODO: Play all songs
-                              },
+                              onPressed: () => _playSongs(songs, 0),
                               icon: const Icon(Icons.play_arrow, size: 26),
                               label: const Text(
                                 "Play",
@@ -148,7 +168,10 @@ class _AlbumScreenState extends State<AlbumScreen> {
               const SizedBox(height: 12),
 
               // Songs list
-              ...songs.map((song) {
+              ...songs.asMap().entries.map((entry) {
+                final index = entry.key;
+                final song = entry.value;
+
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 6),
                   leading: ClipRRect(
@@ -198,9 +221,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                       ),
                     ],
                   ),
-                  onTap: () {
-                    // TODO: play song
-                  },
+                  onTap: () => _playSongs(songs, index),
                 );
               }).toList(),
             ],
