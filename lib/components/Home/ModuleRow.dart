@@ -4,7 +4,7 @@ import 'package:zero/models/modules.dart';
 import 'package:zero/models/songs.dart';
 import 'package:zero/screens/AlbumScreen.dart';
 import 'package:get_it/get_it.dart';
-import 'package:zero/screens/AudioPlayer.dart';
+import 'package:zero/components/audio/AudioPlayer.dart';
 import 'package:zero/services/audioPlayerProvider.dart';
 // import '';
 

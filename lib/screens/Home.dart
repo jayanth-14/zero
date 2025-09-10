@@ -4,6 +4,7 @@ import 'package:zero/api/api.dart';
 import 'package:zero/components/AppDrawer.dart';
 import 'package:zero/components/Home/ModuleRow.dart';
 import 'package:zero/components/Texts/Welcome.dart';
+import 'package:zero/components/audio/MiniPlayer.dart';
 import 'package:zero/components/utils/SearchBar.dart';
 import 'package:zero/models/modules.dart';
 
@@ -22,6 +23,7 @@ class Home extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       drawer: Appdrawer(),
+      bottomNavigationBar: MiniPlayer(),
       body: FutureBuilder<List<Module>>(
         future: api.getModules(),
         builder: (context, snapshot) {

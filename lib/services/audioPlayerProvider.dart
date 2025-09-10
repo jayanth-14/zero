@@ -55,6 +55,17 @@ class MyAudioHandler extends BaseAudioHandler {
   await _player.setAudioSource(ConcatenatingAudioSource(children: audioSources));
 }
 
+  // My own functions
+ // Stream to know if previous exists
+Stream<bool> get hasPreviousStream =>
+    _player.currentIndexStream.map((i) => i != null && i > 0);
+
+// Stream to know if next exists
+Stream<bool> get hasNextStream => _player.currentIndexStream.map((i) {
+      if (i == null) return false;
+      return i < _mediaItems.length - 1;
+    });
+
   @override
   Future<void> skipToQueueItem(int index) async {
     if (index < 0 || index >= _mediaItems.length) return;
@@ -74,6 +85,8 @@ class MyAudioHandler extends BaseAudioHandler {
     }
     skipToQueueItem(previousIndex.toInt());
   }
+
+
 
   @override 
   Future<void> skipToNext() async {

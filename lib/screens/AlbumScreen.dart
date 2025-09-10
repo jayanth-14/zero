@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:zero/api/api.dart';
 import 'package:zero/models/album.dart';
 import 'package:zero/models/songs.dart';
-import 'package:zero/screens/AudioPlayer.dart';
+import 'package:zero/components/audio/AudioPlayer.dart';
 
 class AlbumScreen extends StatefulWidget {
   const AlbumScreen({super.key, required this.id, required this.type});
